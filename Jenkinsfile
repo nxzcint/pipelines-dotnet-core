@@ -6,7 +6,7 @@ pipeline {
  
         stage('Build') {
             steps {
-             bat "dotnet build --configuration Release"
+             sh "dotnet build --configuration Release"
             }
         }
  
