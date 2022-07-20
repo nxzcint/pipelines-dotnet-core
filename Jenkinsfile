@@ -21,9 +21,9 @@ pipeline {
         stage('Validate') {
             steps {
                 
-                sh "dotnet validate"
+                sh "/usr/bin/dotnet validate"
 
-                sh "dotnet clean"
+                sh "/usr/bin/dotnet clean"
 
             }
         }
