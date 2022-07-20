@@ -6,8 +6,8 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
 
-        AWS_S3_BUCKET = "artefact-bucket-repo"
-        ARTIFACT_NAME = "hello-world.war"
+        AWS_S3_BUCKET = "dotnet-bucket-ahmed"
+        ARTIFACT_NAME = "hello-world.dll"
         AWS_EB_APP_NAME = "dotnet-application"
         AWS_EB_APP_VERSION = "${BUILD_ID}"
         AWS_EB_ENVIRONMENT = "Dotnetapplication-env"
@@ -43,30 +43,15 @@ pipeline {
 
             }
 
-            post {
-                always {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-            }
+            
         }
 
-        stage('Quality Scan'){
-            steps {
-                sh '''
-
-                mvn clean verify sonar:sonar \
-                    -Dsonar.projectKey=Online-cohort-project \
-                    -Dsonar.host.url=http://$SONAR_IP \
-                    -Dsonar.login=$SONAR_TOKEN
-
-                '''
-            }
-        }
+       
 
         stage('Package') {
             steps {
                 
-                sh "dotnet package"
+                sh "dotnet publish"
 
             }
 
@@ -84,7 +69,7 @@ pipeline {
 
                 sh "aws configure set region us-east-1"
 
-                sh "aws s3 cp .'**/bin/Debug/net6.0/**.dll' s3://$AWS_S3_BUCKET/$ARTIFACT_NAME"
+                sh "aws s3 cp ./bin/Debug/net6.0/**.dll s3://$AWS_S3_BUCKET/$ARTIFACT_NAME"
                 
             }
         }
