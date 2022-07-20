@@ -21,9 +21,9 @@ pipeline {
         stage('Validate') {
             steps {
                 
-                sh "dotnet validate"
+                sh "dotnet restore"
 
-                sh "dotnet clean"
+                
 
             }
         }
@@ -31,7 +31,7 @@ pipeline {
          stage('Build') {
             steps {
                 
-                sh "dotnet compile"
+                sh "dotnet build"
 
             }
         }
