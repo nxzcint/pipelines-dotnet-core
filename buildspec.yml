@@ -9,25 +9,25 @@ phases:
     on-failure: ABORT
     commands:
     - echo Build start on 'date'
-    - mvn clean
-    - mvn validate
+    - dotnet restore
+    - dotnet build
     - echo Build ends on 'date'
   build:
     on-failure: ABORT
     commands:
     - echo Build start on 'date'
-    - mvn compile
-    - mvn test
+    - dotnet compile
+    - dotnet test
     - echo Build ends on 'date'
   post_build:
     on-failure: ABORT
     commands:
     - echo Build start on 'date'
-    - mvn package
-    - mv target/*.war helloworld.war
+    - dotnet publish
+    - mv target/*.dll helloworld.dll
     - echo Build ends on 'date'
 
 artifacts:
   files:
-    - helloworld.war
+    - helloworld.dll
   name: hello-world-artifact 
