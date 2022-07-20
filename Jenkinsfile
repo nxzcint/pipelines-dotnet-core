@@ -3,10 +3,17 @@ pipeline {
   agent any
   
     stages { 
- 
+  
+      stage('restore') {
+            steps {
+             sh "dotnet restore"
+            }
+        }
+      
+      
         stage('Build') {
             steps {
-             sh "dotnet build --configuration Release"
+             sh "dotnet build"
             }
         }
  
@@ -16,21 +23,16 @@ pipeline {
                 sh "dotnet test" 
             } 
  
-            post { 
-                always { 
-                    junit '**/target/surefire-reports/TEST-*.xml' 
-                } 
-            } 
         } 
  
         stage('Package'){ 
             steps { 
  
-                sh "dotnet package" 
+                sh "dotnet publish" 
             } 
             post { 
                 success { 
-                    archiveArtifacts artifacts: '**/target/*.war', followSymlinks: false 
+                    archiveArtifacts artifacts: '**/bin/Debug/net6.0/**.dll', followSymlinks: false 
                 } 
             } 
         } 
