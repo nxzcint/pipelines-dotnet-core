@@ -4,19 +4,18 @@ phases:
   install:
     on-failure: ABORT
     runtime-versions:
-      java: corretto11
+      dotnet: 6.0
   pre_build:
     on-failure: ABORT
     commands:
     - echo Build start on 'date'
     - dotnet restore
-    - dotnet build
     - echo Build ends on 'date'
   build:
     on-failure: ABORT
     commands:
     - echo Build start on 'date'
-    - dotnet compile
+    - dotnet build
     - dotnet test
     - echo Build ends on 'date'
   post_build:
@@ -24,7 +23,7 @@ phases:
     commands:
     - echo Build start on 'date'
     - dotnet publish
-    - mv target/*.dll helloworld.dll
+    - mv ./bin/Debug/net6.0/**.dll helloworld.dll
     - echo Build ends on 'date'
 
 artifacts:
